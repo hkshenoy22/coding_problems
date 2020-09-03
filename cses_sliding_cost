@@ -1,0 +1,120 @@
+#include<bits/stdc++.h>
+#include <iterator>
+#include <iostream>
+#include <numeric>
+#include <math.h>
+#define ll long long 
+#define ull long
+#define mpa make_pair
+#define pb push_back
+#define ff first
+#define pii pair<ll,ll>
+#define dd long long
+#define trace(x) cerr << #x << " : " << x << endl
+#define ss second
+#define boost ios_base::sync_with_stdio(0)
+#define forp(i,a,b) for(ll i=a;i<=b;i++)
+#define rep(i,n)    for(ll i=0;i<n;++i)
+#define ren(i,n)    for(ll i=n-1;i>=0;i--)
+#define forn(i,a,b) for(ll i=a;i>=b;i--)
+#define all(c) (c).begin(),(c).end()
+#define tr(c,i) for(typeof((c).begin()) i = (c).begin(); i != (c).end();
+#define sc(x) scanf("%lld",&x)
+#define clr(x,val) memset(x,val,sizeof(x))
+#define pr(x) printf("%lld\n",x) 
+#define gc getchar
+#define pdd pair<dd,dd>
+#define prec(x) cout<<fixed<<setprecision(x)
+#define fre freopen("input.txt","r",stdin),freopen("output.txt","w",stdout)
+using namespace std;
+ll a[200005];
+set<pii> top,bot;
+pii med=mpa(-1,-1);
+ll ts=0,bs=0;
+void fix(){
+	ll sz=top.size()+bot.size()+1;
+	
+	if(bot.size()<(sz-1)/2){
+		bot.insert(med);
+		bs+=med.ff;
+		med=*top.begin();
+		ts-=med.ff;
+		top.erase(med);
+	}
+	
+	if(bot.size()>(sz-1)/2){
+		top.insert(med);
+		ts+=med.ff;
+		med=*--bot.end();
+		bs-=med.ff;
+		bot.erase(med);
+	}
+	
+}
+void add(pii ele){
+	if(med.ff==-1){
+		med=ele;
+		return;
+	}
+	if(ele < med){
+		bot.insert(ele);
+		bs+=ele.ff;
+	}
+	else{
+	    ts+=ele.ff;
+		top.insert(ele);
+	}
+	fix();
+	
+}
+
+void rem(pii ele){
+	if(ele==med){
+		med=*top.begin();
+		ts-=med.ff;
+		top.erase(med);
+	}
+	else if(ele<med){
+	    bs-=ele.ff;
+		bot.erase(ele);
+	}
+	else{
+	    ts-=ele.ff;
+		top.erase(ele);
+	}
+	fix();
+	
+}
+int main(){
+	ll k,n;
+	cin>>n>>k;
+	
+	for(ll i=1;i<=n;i++)cin>>a[i];
+	if(k==1){
+		for(ll i=1;i<=n;i++)cout<<0<<" ";
+		return 0;
+	}
+	
+	for(ll i=1;i<=n;i++){
+		add(mpa(a[i],i));
+		if(i-k>=1)rem(mpa(a[i-k],i-k));
+		if(i>=k){
+			ll x=med.ff;
+			ll t_cnt=top.size();
+			ll b_cnt=bot.size();
+			
+			ll ans=(ts-t_cnt*med.ff)+(b_cnt*med.ff-bs);
+			cout<<ans<<" ";
+		}
+		
+	}
+	
+	
+	
+	
+}
+  
+  
+  
+   
+ 
