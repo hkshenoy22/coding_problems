@@ -1,0 +1,79 @@
+#include<bits/stdc++.h>
+#include <iterator>
+#include <iostream>
+#include <numeric>
+#include <math.h>
+#define ll long long
+#define ull long
+#define mpa make_pair
+#define pb push_back
+#define ff first
+#define pii pair<ll,ll>
+#define dd long long
+#define trace(x) cerr << #x << " : " << x << endl
+#define ss second
+#define boost ios_base::sync_with_stdio(0)
+#define forp(i,a,b) for(ll i=a;i<=b;i++)
+#define rep(i,n)    for(ll i=0;i<n;++i)
+#define ren(i,n)    for(ll i=n-1;i>=0;i--)
+#define forn(i,a,b) for(ll i=a;i>=b;i--)
+#define all(c) (c).begin(),(c).end()
+#define tr(c,i) for(typeof((c).begin()) i = (c).begin(); i != (c).end();
+#define sc(x) scanf("%lld",&x)
+#define clr(x,val) memset(x,val,sizeof(x))
+#define pr(x) printf("%lld\n",x) 
+#define gc getchar
+#define pdd pair<dd,dd>
+#define prec(x) cout<<fixed<<setprecision(x)
+#define fre freopen("input.txt","r",stdin),freopen("output.txt","w",stdout)
+using namespace std;
+vector<pair<ll,ll> >cord[1000005];
+ll dp[1000005];
+pii event[200005];
+ll profit[2000005];
+
+int main(){
+	boost;
+    ll n;
+    cin>>n;
+    map<ll,ll> help;
+    for(ll i=1;i<=n;i++){
+    	ll x,y;
+    	cin>>x>>y;
+    	help[x]++;
+    	help[y]++;
+    	cin>>profit[i];
+    	event[i]=mpa(x,y);
+  	}
+  	
+  	//compressing
+	ll c=1;
+  	map<ll,ll>::iterator it;
+  	for(it=help.begin();it!=help.end();it++){
+  		it->ss=c;
+  		c++;
+	}
+	
+	for(ll i=1;i<=n;i++){
+		ll st=help[event[i].ff];
+		ll en=help[event[i].ss];
+		ll pr=profit[i];
+		cord[en].pb(mpa(st,pr));
+	}
+	ll ans=0;
+	for(ll i=1;i<=c;i++){
+       dp[i]=dp[i-1];
+	   for(ll j=0;j<cord[i].size();j++){
+	   	 ll st=cord[i][j].ff;
+		 ll pr=cord[i][j].ss;
+		 dp[i]=max(dp[i],dp[st-1]+pr);
+		}
+		ans=max(ans,dp[i]);		
+	}
+	
+	cout<<ans;
+	
+}
+  
+   
+ 
