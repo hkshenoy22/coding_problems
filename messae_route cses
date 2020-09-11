@@ -1,0 +1,91 @@
+#include<bits/stdc++.h>
+#include <iterator>
+#include <iostream>
+#include <numeric>
+#include <math.h>
+#define ll long long
+#define ull long
+#define mpa make_pair
+#define pb push_back
+#define ff first
+#define pii pair<ll,ll>
+#define dd long long
+#define trace(x) cerr << #x << " : " << x << endl
+#define ss second
+#define boost ios_base::sync_with_stdio(0)
+#define forp(i,a,b) for(ll i=a;i<=b;i++)
+#define rep(i,n)    for(ll i=0;i<n;++i)
+#define ren(i,n)    for(ll i=n-1;i>=0;i--)
+#define forn(i,a,b) for(ll i=a;i>=b;i--)
+#define all(c) (c).begin(),(c).end()
+#define tr(c,i) for(typeof((c).begin()) i = (c).begin(); i != (c).end();
+#define sc(x) scanf("%lld",&x)
+#define clr(x,val) memset(x,val,sizeof(x))
+#define pr(x) printf("%lld\n",x) 
+#define gc getchar
+#define pdd pair<dd,dd>
+#define prec(x) cout<<fixed<<setprecision(x)
+#define fre freopen("input.txt","r",stdin),freopen("output.txt","w",stdout)
+using namespace std;
+vector<ll> adj[200005];
+ll par[200005];
+ll dis[200005];
+int main(){
+   
+   ll n,m;
+   cin>>n>>m;
+   for(ll i=1;i<=n;i++)dis[i]=1e7;
+   while(m--){
+   	  ll x,y;
+   	  cin>>x>>y;
+   	  adj[x].pb(y);
+   	  adj[y].pb(x);
+    }
+    dis[1]=0;
+    queue<ll> q;
+    q.push(1);
+    
+    while(q.size()){
+    	
+    	ll u=q.front();
+    	q.pop();
+    	
+		for(ll i=0;i<adj[u].size();i++){
+    		ll v=adj[u][i];
+    		if(dis[v]>dis[u]+1){
+    			dis[v]=dis[u]+1;
+    			q.push(v);
+    			par[v]=u;
+			}
+    	}
+	}
+	
+	
+	if(dis[n]>n){
+		cout<<"IMPOSSIBLE";
+		return 0;
+	}
+	cout<<dis[n]+1<<endl;
+	stack<ll> path;
+    path.push(n);	
+	while(n!=1){
+		path.push(par[n]);
+		n=par[n];
+	}
+	
+
+    while(path.size()){
+    	cout<<path.top()<<" ";
+    	path.pop();
+	}
+	
+    
+    
+   
+   	
+   
+   
+}
+  
+   
+ 
