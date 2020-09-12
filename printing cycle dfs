@@ -1,0 +1,100 @@
+#include<bits/stdc++.h>
+#include <iterator>
+#include <iostream>
+#include <numeric>
+#include <math.h>
+#define ll long long
+#define ull long
+#define mpa make_pair
+#define pb push_back
+#define ff first
+#define pii pair<ll,ll>
+#define dd long long
+#define trace(x) cerr << #x << " : " << x << endl
+#define ss second
+#define boost ios_base::sync_with_stdio(0)
+#define forp(i,a,b) for(ll i=a;i<=b;i++)
+#define rep(i,n)    for(ll i=0;i<n;++i)
+#define ren(i,n)    for(ll i=n-1;i>=0;i--)
+#define forn(i,a,b) for(ll i=a;i>=b;i--)
+#define all(c) (c).begin(),(c).end()
+#define tr(c,i) for(typeof((c).begin()) i = (c).begin(); i != (c).end();
+#define sc(x) scanf("%lld",&x)
+#define clr(x,val) memset(x,val,sizeof(x))
+#define pr(x) printf("%lld\n",x) 
+#define gc getchar
+#define pdd pair<dd,dd>
+#define prec(x) cout<<fixed<<setprecision(x)
+#define fre freopen("input.txt","r",stdin),freopen("output.txt","w",stdout)
+using namespace std;
+vector<ll> adj[200005];
+ll vis[200005];
+ll par[200005];
+vector<ll> sol;
+
+void dfs(ll v,ll p){
+
+    if(vis[v]==2){
+    	return ;
+    }
+    
+    if(vis[v]==1){
+        //cout<<v<<endl;
+    	sol.pb(v);
+    	
+        while(p!=v){
+        	sol.pb(p);
+            p=par[p];
+		}
+    	
+    	sol.pb(v);
+    	
+    	cout<<sol.size()<<endl;
+    	for(ll i=0;i<sol.size();i++){
+    	    cout<<sol[i]<<" ";
+    	}
+    	exit(0);
+    	
+    	
+	}
+	
+	vis[v]=1;
+	par[v]=p;
+	for(ll i=0;i<adj[v].size();i++){
+		ll u=adj[v][i];
+		if(u!=p)dfs(u,v);
+	}
+	
+	vis[v]=2;
+	
+}
+int main(){
+   
+   ll n,m;
+   cin>>n>>m;
+   while(m--){
+   	  ll x,y;
+   	  cin>>x>>y;
+   	  adj[x].pb(y);
+   	  adj[y].pb(x);
+   }
+   for(ll i=1;i<=n;i++){
+   	  if(vis[i]==0){
+   	  	  dfs(i,0); 
+	   }
+	   if(sol.size()){
+	   	  
+	   	  cout<<(sol.size())<<endl;
+	   	  for(ll j=0;j<sol.size();j++)cout<<sol[j]<<" ";
+	   	  return 0;
+	   	
+	   }
+    }
+    cout<<"IMPOSSIBLE";
+    
+   
+   
+}
+  
+   
+ 
