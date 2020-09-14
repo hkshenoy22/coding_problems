@@ -1,0 +1,55 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    
+    bool leafSimilar(TreeNode* root1, TreeNode* root2) {
+        inorder_leaf_traversal obj1=inorder_leaf_traversal(root1);
+        inorder_leaf_traversal obj2=inorder_leaf_traversal(root2);
+        
+        obj1.Traversal(root1);
+        obj2.Traversal(root2);
+        
+        if(obj1.leaf_traversal.size()!=obj2.leaf_traversal.size())return 0;
+        
+        while(obj1.leaf_traversal.size() && obj2.leaf_traversal.size()){
+            
+            int e=obj1.leaf_traversal.top();
+            int f=obj2.leaf_traversal.top();
+            
+            obj1.leaf_traversal.pop();
+            obj2.leaf_traversal.pop();
+            
+            if(e!=f)return 0;
+        }
+        return 1;
+        
+    }
+    
+    class inorder_leaf_traversal{
+        public: stack<int> leaf_traversal;
+        public: TreeNode* root;
+        
+        inorder_leaf_traversal(TreeNode *x){
+            root=x;
+        }
+        
+        void Traversal(TreeNode *st){
+            if(st==NULL)return;
+            
+            if(st->left)Traversal(st->left);
+            if(st->left==NULL && st->right==NULL)leaf_traversal.push(st->val);
+            if(st->right)Traversal(st->right);
+            
+        }
+    };
+};
