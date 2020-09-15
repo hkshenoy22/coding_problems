@@ -1,0 +1,164 @@
+#include<bits/stdc++.h>
+#include <iterator>
+#include <iostream>
+#include <numeric>
+#include <math.h>
+#define ll long long
+#define ull long
+#define mpa make_pair
+#define pb push_back
+#define ff first
+#define pii pair<ll,ll>
+#define dd long long
+#define trace(x) cerr << #x << " : " << x << endl
+#define ss second
+#define boost ios_base::sync_with_stdio(0)
+#define forp(i,a,b) for(ll i=a;i<=b;i++)
+#define rep(i,n)    for(ll i=0;i<n;++i)
+#define ren(i,n)    for(ll i=n-1;i>=0;i--)
+#define forn(i,a,b) for(ll i=a;i>=b;i--)
+#define all(c) (c).begin(),(c).end()
+#define tr(c,i) for(typeof((c).begin()) i = (c).begin(); i != (c).end();
+#define sc(x) scanf("%lld",&x)
+#define clr(x,val) memset(x,val,sizeof(x))
+#define pr(x) printf("%lld\n",x) 
+#define gc getchar
+#define pdd pair<dd,dd>
+#define prec(x) cout<<fixed<<setprecision(x)
+#define fre freopen("input.txt","r",stdin),freopen("output.txt","w",stdout)
+using namespace std;
+ll monster_time[1005][1005];
+ll vis[1005][1005];
+pii par[1005][1005];
+char a[1005][1005];
+ll n,m;
+
+ll chk(ll x,ll y){
+	if(x>=1 && x<=n && y>=1 && y<=m)return 1;
+	return 0;
+}
+
+ll dx[]={-1,1,0,0};
+ll dy[]={0,0,-1,1};
+int main(){
+   cin>>n>>m;
+   //multisource bfs
+   ll stx=0,sty=0;
+   queue<pii> monster_queue;
+   for(ll i=1;i<=n;i++){
+   	for(ll j=1;j<=m;j++){
+   		 cin>>a[i][j];
+   		 monster_time[i][j]=1e9;
+   		 vis[i][j]=1e9;
+   		 if(a[i][j]=='A'){
+   		 	stx=i;
+   		 	sty=j;
+		 }
+		  
+		 if(a[i][j]=='M'){
+		 	monster_time[i][j]=0;
+		 	monster_queue.push(mpa(i,j));
+		 } 
+		  
+	   }
+    }
+    
+    while(monster_queue.size()){
+    	ll cx=monster_queue.front().ff;
+    	ll cy=monster_queue.front().ss;
+    	monster_queue.pop();
+    	for(ll i=0;i<4;i++){
+    		ll nx=cx+dx[i];
+    		ll ny=cy+dy[i];
+    		
+    		if(chk(nx,ny) && a[nx][ny]!='#' && monster_time[nx][ny]>monster_time[cx][cy]+1){
+    			monster_queue.push(mpa(nx,ny));
+    			monster_time[nx][ny]=monster_time[cx][cy]+1;
+    		}
+		}
+    }
+    
+    
+    queue<pii> q;
+    q.push(mpa(stx,sty));
+    vis[stx][sty]=0;
+    
+    while(q.size()){
+    	ll cx=q.front().ff;
+    	ll cy=q.front().ss;
+    	q.pop();
+    	
+    	for(ll i=0;i<4;i++){
+    		ll nx=cx+dx[i];
+    		ll ny=cy+dy[i];
+    		
+    		if(chk(nx,ny) && a[nx][ny]!='#' && vis[nx][ny]>vis[cx][cy]+1 && (monster_time[nx][ny]>vis[cx][cy]+1 || monster_time[nx][ny]==1e9)){
+    			q.push(mpa(nx,ny));
+    		
+    			vis[nx][ny]=vis[cx][cy]+1;
+    			par[nx][ny]=mpa(cx,cy);
+    		}
+		}
+    	
+	}
+	ll enx=-1;
+	ll eny=-1;
+	for(ll i=1;i<=n;i++){
+		for(ll j=1;j<=m;j++){
+			if(i==n or j==m or i==1 or j==1){
+				if(vis[i][j]<1e9){
+					enx=i;
+					eny=j;
+				}
+			}
+		}
+	}
+	
+	if(enx!=-1){
+	   cout<<"YES\n";
+	   cout<<vis[enx][eny]<<endl;
+	   stack<char> sol;
+	   while(enx!=stx or eny!=sty){
+	     
+		 ll nx=par[enx][eny].ff;
+	     ll ny=par[enx][eny].ss;
+	     
+	     if(nx==enx){
+	     	if(ny>eny)sol.push('L');
+	     	else sol.push('R');
+		 }else{
+		 	if(nx>enx)sol.push('U');
+		 	else sol.push('D');
+		 }
+		 
+		 enx=nx;
+		 eny=ny;
+	  }
+	  
+	  while(sol.size()){
+	  	cout<<sol.top();
+	  	sol.pop();
+	  }
+	}else{
+	    cout<<"NO";
+	}
+	
+	
+	
+	
+    
+    
+    
+    
+    
+   
+   
+    
+}
+    
+   
+   
+
+  
+   
+ 
