@@ -1,0 +1,89 @@
+#include<bits/stdc++.h>
+#include <iterator>
+#include <iostream>
+#include <numeric>
+#include <math.h>
+#define ll long long
+#define ull long
+#define mpa make_pair
+#define pb push_back
+#define ff first
+#define pii pair<ll,ll>
+#define dd long long
+#define trace(x) cerr << #x << " : " << x << endl
+#define ss second
+#define boost ios_base::sync_with_stdio(0)
+#define forp(i,a,b) for(ll i=a;i<=b;i++)
+#define rep(i,n)    for(ll i=0;i<n;++i)
+#define ren(i,n)    for(ll i=n-1;i>=0;i--)
+#define forn(i,a,b) for(ll i=a;i>=b;i--)
+#define all(c) (c).begin(),(c).end()
+#define tr(c,i) for(typeof((c).begin()) i = (c).begin(); i != (c).end();
+#define sc(x) scanf("%lld",&x)
+#define clr(x,val) memset(x,val,sizeof(x))
+#define pr(x) printf("%lld\n",x) 
+#define gc getchar
+#define pdd pair<dd,dd>
+#define prec(x) cout<<fixed<<setprecision(x)
+#define fre freopen("input.txt","r",stdin),freopen("output.txt","w",stdout)
+using namespace std;
+vector<pii> adj[200005];
+set <pii> q;
+ll dis[200005];
+int main(){
+   ll n,m;
+   boost;
+   cin>>n>>m;
+   for(ll i=1;i<=n;i++) dis[i]=1e15;
+   
+   for(ll i=1;i<=m;i++){
+   	   ll x,y,w;
+   	   cin>>x>>y>>w;
+   	   adj[x].pb(mpa(y,w));
+   	   
+    }
+    q.insert(mpa(0,1));
+    dis[1]=0;
+    
+    while(!q.empty()){
+    	
+    	ll v=(*q.begin()).ss;
+    	q.erase(q.begin());
+
+    	for(auto x:adj[v]){
+    		ll to=x.ff;
+    		ll w=x.ss;
+    		if(dis[to]>dis[v]+w){
+    			q.erase(mpa(dis[to],to));
+    			dis[to]=dis[v]+w;
+    			q.insert(mpa(dis[to],to));
+			}
+    		
+		}
+	}
+	
+	for(ll i=1;i<=n;i++)cout<<dis[i]<<" ";
+    
+    
+    
+ 
+ 
+   
+   
+	
+	
+	
+	
+    
+    
+    
+    
+    
+   
+   
+    
+}
+    
+   
+   
+ 
