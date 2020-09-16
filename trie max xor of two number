@@ -1,0 +1,44 @@
+class Solution {
+public:
+    int trie[1000005][2];
+    int sz=1;
+    void insert(int n){
+        int curr=0;
+        for(int i=30;i>=0;i--){
+            int bit=0;
+            if(n&(1<<i))bit=1;
+            if(!trie[curr][bit]) trie[curr][bit]=sz++;
+            curr=trie[curr][bit];
+        }
+    }
+    
+    int sol(int n){
+        int curr=0;
+        int ans=0;
+        for(int i=30;i>=0;i--){
+            int bit=0;
+            if(n&(1<<i))bit=1;
+            bit=1-bit;
+            if(trie[curr][bit]){
+                ans=(ans+(1<<i));
+                curr=trie[curr][bit];
+            }
+            else{
+                curr=trie[curr][1-bit];
+            }
+        }
+        return ans;
+        
+    }
+        
+        
+    int findMaximumXOR(vector<int>& nums) {
+        int n=nums.size();
+        int ans=0;
+        for(int i=0;i<n;i++){
+           ans=max(ans,sol(nums[i]));    
+           insert(nums[i]); 
+        }
+        return ans;
+    }
+};
