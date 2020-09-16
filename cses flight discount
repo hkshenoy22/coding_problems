@@ -1,0 +1,94 @@
+#include<bits/stdc++.h>
+#include <iterator>
+#include <iostream>
+#include <numeric>
+#include <math.h>
+#define ll long long
+#define ull long
+#define mpa make_pair
+#define pb push_back
+#define ff first
+#define pii pair<ll,ll>
+#define dd long long
+#define trace(x) cerr << #x << " : " << x << endl
+#define ss second
+#define boost ios_base::sync_with_stdio(0)
+#define forp(i,a,b) for(ll i=a;i<=b;i++)
+#define rep(i,n)    for(ll i=0;i<n;++i)
+#define ren(i,n)    for(ll i=n-1;i>=0;i--)
+#define forn(i,a,b) for(ll i=a;i>=b;i--)
+#define all(c) (c).begin(),(c).end()
+#define tr(c,i) for(typeof((c).begin()) i = (c).begin(); i != (c).end();
+#define sc(x) scanf("%lld",&x)
+#define clr(x,val) memset(x,val,sizeof(x))
+#define pr(x) printf("%lld\n",x) 
+#define gc getchar
+#define pdd pair<dd,dd>
+#define prec(x) cout<<fixed<<setprecision(x)
+#define fre freopen("input.txt","r",stdin),freopen("output.txt","w",stdout)
+using namespace std;
+ll dis[200005][2];
+vector<pii> adj[2000005];
+int main(){
+  boost;
+  ll n,m;
+  cin>>n>>m;
+  for(ll i=1;i<=n;i++){
+  	dis[i][0]=1e15;
+  	dis[i][1]=1e15;
+  }
+  while(m--){
+  	ll x,y,w;
+  	cin>>x>>y>>w;
+  	adj[x].pb(mpa(y,w));
+  }
+  
+  dis[1][0]=0;
+  set<pair<ll,pii> > q;
+  
+  q.insert(mpa(0,mpa(1,0)));
+  
+  while(q.size()){
+  	pair<ll,pii>  curr=*q.begin();
+  	
+  	ll us=curr.ss.ss;
+  	ll v=curr.ss.ff;
+    
+	q.erase(q.begin()); 
+	
+  	for(ll i=0;i<adj[v].size();i++){
+  		
+  		ll len=adj[v][i].ss;
+  		ll to=adj[v][i].ff;
+  		
+  		// once used
+  		if(dis[to][1]>dis[v][0]+len/2 && us==0){
+  			if(dis[to][1]!=1e15)q.erase(q.find(mpa(dis[to][1],mpa(to,1))));
+  			dis[to][1]=dis[v][0]+len/2;
+  			q.insert(mpa(dis[to][1],mpa(to,1)));
+		}
+  		
+  		if(dis[to][1]>dis[v][1]+len && us==1){
+  			if(dis[to][1]!=1e15)q.erase(q.find(mpa(dis[to][1],mpa(to,1))));
+  			dis[to][1]=dis[v][1]+len;
+  			q.insert(mpa(dis[to][1],mpa(to,1)));
+  		}
+  		//not use
+  		if(dis[to][0]>dis[v][0]+len && us==0){
+  			if(dis[to][0]!=1e15)q.erase(q.find(mpa(dis[to][0],mpa(to,0))));
+  			dis[to][0]=dis[v][0]+len;
+  			q.insert(mpa(dis[to][0],mpa(to,0)));
+		}
+		
+  		
+  	}
+  	
+  } 
+  
+  	cout<<min(dis[n][0],dis[n][1]);
+  	
+    
+  
+}
+    
+   
