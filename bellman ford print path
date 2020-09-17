@@ -1,0 +1,125 @@
+#include<bits/stdc++.h>
+#include <iterator>
+#include <iostream>
+#include <numeric>
+#include <math.h>
+#define ll long long
+#define ull long
+#define mpa make_pair
+#define pb push_back
+#define ff first
+#define pii pair<ll,ll>
+#define dd long long
+#define trace(x) cerr << #x << " : " << x << endl
+#define ss second
+#define boost ios_base::sync_with_stdio(0)
+#define forp(i,a,b) for(ll i=a;i<=b;i++)
+#define rep(i,n)    for(ll i=0;i<n;++i)
+#define ren(i,n)    for(ll i=n-1;i>=0;i--)
+#define forn(i,a,b) for(ll i=a;i>=b;i--)
+#define all(c) (c).begin(),(c).end()
+#define tr(c,i) for(typeof((c).begin()) i = (c).begin(); i != (c).end();
+#define sc(x) scanf("%lld",&x)
+#define clr(x,val) memset(x,val,sizeof(x))
+#define pr(x) printf("%lld\n",x) 
+#define gc getchar
+#define pdd pair<dd,dd>
+#define prec(x) cout<<fixed<<setprecision(x)
+#define fre freopen("input.txt","r",stdin),freopen("output.txt","w",stdout)
+using namespace std;
+ll dis[200005];
+vector<ll> adj[200005];
+ll vis[200005];
+ll par[200005];
+vector<pair<pii,ll> > edg;
+
+void dfs(ll v){
+	vis[v]=1;
+	for(ll i=0;i<adj[v].size();i++){
+		if(vis[adj[v][i]]==0) dfs(adj[v][i]);
+	}
+}
+
+
+int main(){
+  boost;
+  ll n,m;
+  cin>>n>>m;
+  for(ll i=1;i<=n;i++)dis[i]=1e16;
+  
+    
+  for(ll i=1;i<=m;i++){
+  	ll x,y,w;
+  	cin>>x>>y>>w;
+  	edg.pb(mpa(mpa(x,y),w));
+  	adj[x].pb(y);
+   }
+   
+   for(ll i=1;i<=n;i++){
+   	 if(!vis[i]){
+   	 	dfs(i);
+   	 	dis[i]=0;
+	    }
+    }
+   
+   
+   for(ll i=1;i<=n-1;i++){
+   	 	
+   	 
+	for(ll j=0;j<m;j++){
+   	  	ll src=edg[j].ff.ff;
+   	  	ll dest=edg[j].ff.ss;
+   	  	ll len=edg[j].ss;
+   	  	if(dis[src]!=1e15 && dis[dest]>dis[src]+len){
+   	  		dis[dest]=dis[src]+len;
+   	  		par[dest]=src;
+		}
+   	  }
+    }
+	
+	ll affect=-1;
+	
+	for(ll j=0;j<m;j++){
+   	  	ll src=edg[j].ff.ff;
+   	  	ll dest=edg[j].ff.ss;
+   	  	ll len=edg[j].ss;
+   	  	if(dis[src]!=1e15 && dis[dest]>dis[src]+len){
+   	  		dis[dest]=dis[src]+len;
+   	  		par[dest]=src;
+   	  		//cout<<dest<<" "<<src<<endl;
+			affect=dest;
+		//	break;
+	    }
+    }
+    
+    
+    if(affect==-1){
+    	cout<<"NO";
+	}
+	else{
+		cout<<"YES\n";
+		stack<ll> path;
+		
+		for(int i=0;i<n;i++)affect=par[affect];
+		
+		path.push(affect);
+		ll u=affect;
+		while(par[affect]!=u){
+		    affect=par[affect];
+		    path.push(affect);
+		}
+	    path.push(u);
+	    
+	    while(path.size()){
+	    	cout<<path.top()<<" ";
+	        path.pop();
+		}
+		
+	}
+	
+		
+}
+   	  
+
+    
+   
