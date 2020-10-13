@@ -1,0 +1,229 @@
+#include<bits/stdc++.h>
+#include <iterator>
+#include <iostream>
+#include <numeric>
+#include <math.h>
+#define ll long long
+#define ull long
+#define mpa make_pair
+#define pb push_back
+#define ff first
+#define pii pair<ll,ll>
+#define dd long long
+#define trace(x) cerr << #x << " : " << x << endl
+#define ss second
+#define boost ios_base::sync_with_stdio(0)
+#define forp(i,a,b) for(ll i=a;i<=b;i++)
+#define rep(i,n)    for(ll i=0;i<n;++i)
+#define ren(i,n)    for(ll i=n-1;i>=0;i--)
+#define forn(i,a,b) for(ll i=a;i>=b;i--)
+#define all(c) (c).begin(),(c).end()
+#define tr(c,i) for(typeof((c).begin()) i = (c).begin(); i != (c).end();
+#define sc(x) scanf("%lld",&x)
+#define clr(x,val) memset(x,val,sizeof(x))
+#define pr(x) printf("%lld\n",x) 
+#define gc getchar
+#define pdd pair<dd,dd>
+#define read_arr(a,n) for(ll i=1;i<=n;i++)cin>>a[i];
+#define init_arr(a,n) for(ll i=1;i<=n;i++)a[i]=n-i+1;
+#define prec(x) cout<<fixed<<setprecision(x)
+#define fre freopen("input.txt","r",stdin),freopen("output.txt","w",stdout)
+#define arr array 
+using namespace std;
+
+void radix_sort(  vector< arr<ll,3> > &curr ){
+	
+	ll n=curr.size();
+	vector<ll> cnt(n,0),pos(n,0);
+	for(ll i=0;i<n;i++) cnt[curr[i][1]]++;
+	
+	for(ll i=1;i<n;i++)pos[i]=pos[i-1]+cnt[i-1];
+	
+	vector< arr<ll,3> > p(n);
+	
+	for(ll i=0;i<n;i++){
+		p[pos[curr[i][1]]]=curr[i];
+		pos[curr[i][1]]++;
+		cnt[i]=0;		
+	}
+	
+	curr=p;
+	
+	pos[0]=0;
+	for(ll i=0;i<n;i++)cnt[curr[i][0]]++;
+	for(ll i=1;i<n;i++)pos[i]=pos[i-1]+cnt[i-1];
+	
+	
+	for(ll i=0;i<n;i++){
+		
+		p[pos[curr[i][0]]]=curr[i];
+		pos[curr[i][0]]++;
+		cnt[i]=0;
+	}
+
+	curr=p;
+}
+
+vector<ll> get_suffix_array(string s){
+	s+='?';
+	ll n=s.size();
+	
+	vector< pair<char,ll> > lis(n);
+	vector<ll> curr_class(n);
+	
+	for(ll i=0;i<n;i++) lis[i]={s[i],i};
+	sort(all(lis));
+	
+	curr_class[lis[0].ss]=0;
+	for(ll i=1;i<n;i++){
+		curr_class[lis[i].ss]=curr_class[lis[i-1].ss];
+		if(lis[i].ff!=lis[i-1].ff)curr_class[lis[i].ss]++;
+	}
+
+	
+	
+	ll l=2;
+	
+	while(l<=n*2){
+		ll hl=l/2;
+		
+		vector< arr<ll,3> >class_sort(n);
+		for(ll i=0;i<n;i++){
+			class_sort[i]={curr_class[i],curr_class[(i+hl)%n],i};
+		}
+		radix_sort(class_sort);
+		//sort(all(class_sort));
+		curr_class[class_sort[0][2]]=0;
+		
+		for(ll i=1;i<n;i++){
+		curr_class[class_sort[i][2]]=curr_class[class_sort[i-1][2]];
+		if(class_sort[i][0]!=class_sort[i-1][0] or class_sort[i][1]!=class_sort[i-1][1] )curr_class[class_sort[i][2]]++;
+		}
+		
+		
+		l*=2;
+		
+	}
+	
+	return curr_class;
+	
+	
+}
+
+void print_util(vector<ll> d){
+	for(ll i=0;i<d.size();i++)cout<<d[i]<<" ";
+	cout<<endl;
+}
+
+vector<ll> suff_fi;
+string s;
+
+ll bsearch(string req){
+	ll n=suff_fi.size();
+	ll p=req.size();
+	ll lo=0;
+	ll hi=n-1;
+	
+	ll lo_ind=n+1;
+	ll hi_ind=-1;
+	
+	while(hi>=lo){
+		ll m=(hi+lo)/2ll;
+		ll ind=suff_fi[m];
+
+		string str_to_cmp;
+		
+		for(ll i=ind;i<ind+p;i++){
+			if(i>n-1)break;
+			str_to_cmp+=s[i];
+		}
+		
+		if(str_to_cmp==req){
+			hi_ind=max(hi_ind,m);
+			lo_ind=min(lo_ind,m);
+			
+			
+		}
+		
+		if(str_to_cmp<=req){
+			lo=m+1;
+		}else{
+			hi=m-1;
+		}
+		
+	}
+	
+	lo=0;
+	hi=n-1;
+	
+	while(hi>=lo){
+		ll m=(hi+lo)/2ll;
+		ll ind=suff_fi[m];
+
+		string str_to_cmp;
+		
+		for(ll i=ind;i<ind+p;i++){
+			if(i>n-1)break;
+			str_to_cmp+=s[i];
+		}
+		
+		if(str_to_cmp==req){
+			hi_ind=max(hi_ind,m);
+			lo_ind=min(lo_ind,m);
+			
+			
+		}
+		
+		if(str_to_cmp<req){
+			lo=m+1;
+		}else{
+			hi=m-1;
+		}
+		
+	}
+	
+	return max(0ll,hi_ind-lo_ind+1ll);
+}
+int main(){
+	
+
+	cin>>s;
+	vector<ll> s_arr=get_suffix_array(s);
+//	print_util(s_arr);
+	s+='$';
+	ll n=s.size();
+	
+	vector<ll> lcp_fi(n-1,0),suff_fi(n,0);
+	
+	for(ll i=0;i<n;i++) suff_fi[s_arr[i]]=i;
+			
+	print_util(suff_fi);
+	
+	
+	vector<ll> lcp(n-1,0);
+	ll k=0;
+	for(ll i=0;i<n-1;i++){
+		
+		ll st=s_arr[i];
+		ll prev=suff_fi[st-1];
+		
+		while(s[i+k]==s[prev+k])k++;
+		lcp[st]=k;
+		k=max(k-1,0ll);
+		
+	}
+	for(ll i=1;i<=n-1;i++)cout<<lcp[i]<<" ";
+	
+	
+	
+		
+	
+
+		
+}
+
+
+	
+
+
+  
