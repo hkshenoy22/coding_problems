@@ -1,0 +1,151 @@
+#include<bits/stdc++.h>
+#include <iterator>
+#include <iostream>
+#include <numeric>
+#include <math.h>
+#define ll long long
+#define ull long
+#define mpa make_pair
+#define pb push_back
+#define ff first
+#define pii pair<ll,ll>
+#define dd double
+#define trace(x) cerr << #x << " : " << x << endl
+#define ss second
+#define boost ios_base::sync_with_stdio(0)
+#define forp(i,a,b) for(ll i=a;i<=b;i++)
+#define rep(i,n)    for(ll i=0;i<n;++i)
+#define ren(i,n)    for(ll i=n-1;i>=0;i--)
+#define forn(i,a,b) for(ll i=a;i>=b;i--)
+#define all(c) (c).begin(),(c).end()
+#define tr(c,i) for(typeof((c).begin()) i = (c).begin(); i != (c).end();
+#define sc(x) scanf("%lld",&x)
+#define clr(x,val) memset(x,val,sizeof(x))
+#define pr(x) printf("%lld\n",x) 
+#define gc getchar
+#define pdd pair<dd,dd>
+#define read_arr(a,n) for(ll i=1;i<=n;i++)cin>>a[i];
+#define init_arr(a,n) for(ll i=1;i<=n;i++)a[i]=n-i+1;
+#define prec(x) cout<<fixed<<setprecision(x)
+#define fre freopen("input.txt","r",stdin),freopen("output.txt","w",stdout)
+#define arr array 
+using namespace std;
+class p_queue{
+	
+	public: vector<ll> a;
+	
+	p_queue(){
+		a.clear();
+	}
+	
+	
+	bool is_empty(){
+		return a.size()==0;
+	}
+	
+	void get_top(){
+		
+		if(is_empty()){
+			cout<<"Queue is empty\n";
+			return ;
+		}
+	
+		cout<<"Min Value is: "<<a[0]<<endl;
+		return ;
+		
+		
+		
+		
+	}
+	
+	void pop(){
+		
+		if(is_empty()){
+			cout<<"Queue is empty\n";
+			return ;
+		}
+		
+		ll n=a.size();
+		a[0]=a[n-1];
+		a.pop_back();
+		heapify_down();
+	}
+	
+	void push(ll ele){
+		a.pb(ele);
+		heapify_up();
+	
+	}
+	
+	
+	void heapify_up(){
+		ll ind=a.size()-1;
+		while(ind>0){
+			
+			ll p1=(ind-1)/2;
+			if(a[ind]<a[p1]){
+				swap(a[ind],a[p1]);
+				ind=p1;
+			}else{
+				break;
+			}
+		}
+	}
+	
+	
+	void heapify_down(){
+		ll ind=0;
+		
+		while(1){
+		
+		ll c1=ind*2+1;
+		ll c2=ind*2+2;
+		
+		if(c2<a.size()){
+			ll mi=min(a[c1],a[c2]);
+			if(mi>=a[ind]){
+				break;
+			}
+			
+			else{
+				if(a[c1]==mi){
+					swap(a[ind],a[c1]);
+					ind=c1;
+				}else{
+					swap(a[ind],a[c2]);
+					ind=c2;
+				}
+			}
+			
+		}else if(c1<a.size()){
+			if(a[c1]<a[ind]){
+				swap(a[c1],a[ind]);
+				ind=c1;
+			}else{
+				break;
+			}
+			
+		}else{
+			break;
+		}
+		
+	 }
+   }
+};
+int main() {
+	p_queue q;
+	q.push(89);
+	q.push(9886);
+	q.push(11);
+	q.push(91);
+	
+	q.get_top();
+	q.get_top();
+	
+	q.pop();
+	q.push(12);
+	
+	q.get_top();
+	
+		
+}
