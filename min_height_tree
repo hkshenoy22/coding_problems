@@ -1,0 +1,46 @@
+class Solution {
+public:
+    vector<int> adj[20005];
+    int deg[20005];
+    vector<int> findMinHeightTrees(int n, vector<vector<int>>& edges) {
+        int m=edges.size();
+        
+        vector<int> non_leaf;
+        
+        for(int i=0;i<m;i++){
+            adj[edges[i][0]].push_back(edges[i][1]);
+            adj[edges[i][1]].push_back(edges[i][0]);
+            deg[edges[i][1]]++;
+            deg[edges[i][0]]++;
+            
+        }
+        
+        for(int i=0;i<n;i++)non_leaf.push_back(i);
+        
+        while(non_leaf.size()>2){
+            
+            vector<int> lef,rem;
+            for(int i=0;i<non_leaf.size();i++){
+                if(deg[non_leaf[i]]>1){
+                    rem.push_back(non_leaf[i]);
+                }else{
+                    lef.push_back(non_leaf[i]);
+                }
+            }
+            
+            
+            
+            for(int i=0;i<lef.size();i++){
+                for(int j=0;j<adj[lef[i]].size();j++)deg[adj[lef[i]][j]]--;
+            }
+            
+            non_leaf=rem;
+            
+        }
+        
+        
+        return non_leaf;
+        
+        
+    }
+};
