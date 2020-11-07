@@ -1,0 +1,74 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* rev_list(ListNode **x){
+        ListNode *y=*x;
+        if(y==NULL or y->next==NULL){
+            return y;
+        }
+        ListNode *p=NULL,*q=y,*nx=q;
+        
+        while(q){
+            
+            nx=q->next;
+            q->next=p;
+            p=q;
+            q=nx;
+        
+        }
+        
+        return p;
+        
+    }
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+       
+    
+       ListNode *r1=rev_list(&l1);
+       ListNode *r2=rev_list(&l2);
+   
+       ListNode *sol=new ListNode(); 
+       int c=0;
+       ListNode *b=sol;
+        
+       while(r1 or r2){
+           
+           int v1=0;
+           int v2=0;
+           
+           
+           if(r1==NULL)v1=0;
+           else v1=r1->val,r1=r1->next;
+           
+           if(r2==NULL)v2=0;
+           else v2=r2->val,r2=r2->next;
+           
+           
+           int v=(v1+v2+c)%10;
+           c=(v1+v2+c)/10;
+           
+           sol->val=v;
+          
+           if(r1 or r2 or c){ 
+           sol->next=new ListNode();
+           sol=sol->next;
+           }
+      
+      }
+      
+        
+       if(c)sol->val=c;
+       return rev_list(&b);  
+      
+   
+       
+    }
+};
