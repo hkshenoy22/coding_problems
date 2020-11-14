@@ -1,0 +1,45 @@
+#define ff first
+#define ss second
+class Solution {
+public:
+    
+    int minimumJumps(vector<int>& forbidden, int a, int b, int x) {
+        vector<int> ok(40005,1);
+        int dp[40005][2];
+        for(auto it:forbidden)ok[it]=0;
+        memset(dp,-1,sizeof(dp));
+        
+        dp[0][0]=0;
+    
+        queue< pair<int,int> >q;
+        q.push({0,0});
+        int ans=INT_MAX;
+        
+        while(q.size()){
+            
+            auto v=q.front();
+            int cord=v.ff;
+            int st=v.ss;
+            q.pop();
+            
+            if(cord+a<40005 && ok[cord+a] && dp[cord+a][0]==-1){
+                dp[cord+a][0]=dp[cord][st]+1;
+                q.push({cord+a,0});
+            }
+            
+            if(cord-b>=0 && ok[cord-b] && dp[cord-b][1]==-1 && st==0){
+                dp[cord-b][1]=dp[cord][st]+1;
+                q.push({cord-b,1});
+            }
+       }
+        
+       if(dp[x][0]==-1 && dp[x][1]==-1)return -1;
+       if(dp[x][0]==-1)return dp[x][1];
+       if(dp[x][1]==-1)return dp[x][0];
+       return min(dp[x][0],dp[x][1]); 
+        
+        
+        
+        return -1;
+    }
+};
