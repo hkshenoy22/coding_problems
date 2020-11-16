@@ -1,0 +1,27 @@
+Node *build_tree(int arr[],int l,int r){
+    if(l>r){
+        return NULL;
+    }
+    Node *root=new Node();
+    root->data=arr[l];
+    int l_en=r;
+    int r_st=-1;
+    for(int i=l;i<=r;i++){
+        if(arr[i]>arr[l]){
+            r_st=i;
+            l_en=i-1;
+            break;
+        }
+    }
+    
+    r_st=l_en+1;
+    
+    root->left=build_tree(arr,l+1,l_en);
+    root->right=build_tree(arr,r_st,r);
+    return root;
+}
+Node* constructTree(int pre[], int size) {
+    //code here
+    Node *tree=build_tree(pre,0,size-1);
+    return tree;
+}
